@@ -82,4 +82,24 @@ public class UserService {
             throw new IllegalArgumentException("Username or email already exists");
         }
     }
+
+    public User login(String usernameOrEmail, String rawPassword){
+        String input = usernameOrEmail.trim();
+
+        Optional<User> optionalUser = userRepository.findByUsername(input);
+        if (optionalUser.isEmpty()) {
+            optionalUser = userRepository.findByEmail(input.toLowerCase());
+        }
+
+        User user = optionalUser.orElseThrow(() ->
+                new IllegalArgumentException("User not found"));
+
+        if (!passwordEncoder.matches(rawPassword, user.getPasswordHash())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        return user;
+
+
+    }
 }
