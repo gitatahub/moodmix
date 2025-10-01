@@ -1,7 +1,7 @@
-package com.moodmix.moodmix.repository.repositories;
+package com.moodmix.moodmix.data.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.moodmix.moodmix.repository.entities.User;
+import com.moodmix.moodmix.data.entities.User;
 
 import java.util.Optional;
 

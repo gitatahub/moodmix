@@ -1,4 +1,4 @@
-package com.moodmix.moodmix.repository.entities;
+package com.moodmix.moodmix.data.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

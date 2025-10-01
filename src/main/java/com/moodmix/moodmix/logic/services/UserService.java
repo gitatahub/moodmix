@@ -1,7 +1,7 @@
-package com.moodmix.moodmix.logic;
+package com.moodmix.moodmix.logic.services;
 
-import com.moodmix.moodmix.repository.entities.User;
-import com.moodmix.moodmix.repository.repositories.UserRepository;
+import com.moodmix.moodmix.data.entities.User;
+import com.moodmix.moodmix.data.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
