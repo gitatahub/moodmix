@@ -44,6 +44,15 @@ public class Track {
     @Column(nullable = false)
     private int durationSec; // in seconds
 
+    @Column(nullable = true)
+    private int bpm;
+
+    @Column(nullable = true)
+    private String key;
+
+    @Column(nullable = true)
+    private String scale;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

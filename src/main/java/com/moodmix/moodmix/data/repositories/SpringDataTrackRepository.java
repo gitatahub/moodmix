@@ -6,6 +6,6 @@ import com.moodmix.moodmix.data.entities.Track;
 
 
 @Repository
-public interface TrackRepository extends JpaRepository<Track,Long> {
+public interface SpringDataTrackRepository extends JpaRepository<Track,Long> {
 
 }
