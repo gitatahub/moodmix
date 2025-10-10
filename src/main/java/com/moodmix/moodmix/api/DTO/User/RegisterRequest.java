@@ -1,4 +1,4 @@
-package com.moodmix.moodmix.api.DTO;
+package com.moodmix.moodmix.api.DTO.User;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

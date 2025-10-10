@@ -1,4 +1,4 @@
-package com.moodmix.moodmix.logic.services;
+package com.moodmix.moodmix.data.analysis;
 
 import com.moodmix.moodmix.logic.interfaces.AudioAnalysisService;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
 import java.io.File;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class EssentiaAnalysisService implements AudioAnalysisService {
 
             return response.getBody();
         } catch (Exception e) {
-            throw new RuntimeException("Essentia analysis failed", e);
+            throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, e.getMessage() );
         }
     }
 }

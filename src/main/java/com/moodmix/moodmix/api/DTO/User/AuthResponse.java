@@ -1,4 +1,4 @@
-package com.moodmix.moodmix.api.DTO;
+package com.moodmix.moodmix.api.DTO.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

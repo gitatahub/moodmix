@@ -1,8 +1,7 @@
-package com.moodmix.moodmix.data.implementation;
+package com.moodmix.moodmix.data.repositories;
 
 import com.moodmix.moodmix.data.entities.Track;
-import com.moodmix.moodmix.data.repositories.SpringDataTrackRepository;
-import com.moodmix.moodmix.logic.interfaces.ITrackRepository;
+import com.moodmix.moodmix.logic.interfaces.TrackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class TrackRepositoryImpl implements ITrackRepository {
+public class TrackRepositoryImpl implements TrackRepository {
 
     private final SpringDataTrackRepository trackRepository;
 

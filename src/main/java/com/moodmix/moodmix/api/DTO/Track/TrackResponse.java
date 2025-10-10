@@ -1,4 +1,4 @@
-package com.moodmix.moodmix.api.DTO;
+package com.moodmix.moodmix.api.DTO.Track;
 
 import com.moodmix.moodmix.data.entities.Track;
 

@@ -1,8 +1,8 @@
 package com.moodmix.moodmix.api.Controller;
 
-import com.moodmix.moodmix.api.DTO.LoginRequest;
-import com.moodmix.moodmix.api.DTO.RegisterRequest;
-import com.moodmix.moodmix.api.DTO.AuthResponse;
+import com.moodmix.moodmix.api.DTO.User.LoginRequest;
+import com.moodmix.moodmix.api.DTO.User.RegisterRequest;
+import com.moodmix.moodmix.api.DTO.User.AuthResponse;
 import com.moodmix.moodmix.logic.services.UserService;
 import com.moodmix.moodmix.data.entities.User;
 import jakarta.validation.Valid;
