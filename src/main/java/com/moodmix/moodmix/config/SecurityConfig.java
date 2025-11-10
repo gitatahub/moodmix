@@ -20,7 +20,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/ping", "/api/auth/register", "/api/auth/login", "/swagger-ui/**",
-                                "/v3/api-docs/**", "/api/tracks/**").permitAll()
+                                "/v3/api-docs/**", "/api/tracks/**", "/api/playlist/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)   // disable Basic Auth

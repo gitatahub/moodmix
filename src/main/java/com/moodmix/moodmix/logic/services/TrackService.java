@@ -2,8 +2,9 @@ package com.moodmix.moodmix.logic.services;
 
 import com.moodmix.moodmix.api.DTO.Track.TrackUploadRequest;
 import com.moodmix.moodmix.data.entities.Track;
+import com.moodmix.moodmix.data.interfaces.ITrackRepository;
 import com.moodmix.moodmix.logic.interfaces.AudioAnalysisService;
-import com.moodmix.moodmix.logic.interfaces.TrackRepository;
+import com.moodmix.moodmix.logic.interfaces.ITrackService;
 import com.moodmix.moodmix.logic.interfaces.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TrackService {
+public class TrackService implements ITrackService {
 
-    private final TrackRepository trackRepository;
+    private final ITrackRepository trackRepository;
     private final StorageService storageService;
     private final AudioAnalysisService audioAnalysisService;
 
+    @Override
     public Track upload(TrackUploadRequest request) {
         MultipartFile file = request.file();
         validate(file);
@@ -81,12 +83,11 @@ public class TrackService {
     }
 
 
-
-
+    @Override
     public Optional<Track> getById(Long id) {
         return trackRepository.findById(id);
     }
-
+    @Override
     public List<Track> getAll() {
         return trackRepository.findAll();
     }

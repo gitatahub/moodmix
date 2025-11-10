@@ -16,9 +16,9 @@ public class Track {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // keep for later when auth is added
-    @Column(nullable = false)
-    private Long userId = 0L;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
 
     // original uploaded filename (what the user had on disk)
     @Column(nullable = false)
