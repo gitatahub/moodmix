@@ -1,17 +1,16 @@
 package com.moodmix.moodmix.logic.services;
 
 import com.moodmix.moodmix.api.DTO.Playlist.CreatePlaylistRequest;
-import com.moodmix.moodmix.api.DTO.Track.TrackResponse;
 import com.moodmix.moodmix.api.DTO.Track.TrackUploadRequest;
 import com.moodmix.moodmix.data.entities.Playlist;
 import com.moodmix.moodmix.data.entities.Track;
 import com.moodmix.moodmix.data.interfaces.IPlaylistRepository;
+import com.moodmix.moodmix.logic.exceptions.ServiceException;
 import com.moodmix.moodmix.logic.interfaces.IPlaylistService;
 import com.moodmix.moodmix.logic.interfaces.ITrackService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,78 +18,115 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PlaylistService implements IPlaylistService {
+
     private final IPlaylistRepository playlistRepository;
     private final ITrackService trackService;
 
     @Override
-    public Playlist createPlaylist(CreatePlaylistRequest request ) {
+    public Playlist createPlaylist(CreatePlaylistRequest request) {
+
+        if (request.name() == null || request.name().isBlank()) {
+            throw new ServiceException(HttpStatus.BAD_REQUEST,
+                    "Playlist name cannot be empty");
+        }
+
         Playlist playlist = new Playlist();
         playlist.setName(request.name());
         playlist.setDescription(request.description());
 
         return playlistRepository.save(playlist);
     }
+
     @Override
     public Playlist addTrack(Long playlistId, Long trackId) {
         Playlist playlist = playlistRepository.findById(playlistId)
-                .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Playlist not found"));
+                .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND,
+                        "Playlist not found"));
 
         Track track = trackService.getById(trackId)
-                .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Track not found"));
+                .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND,
+                        "Track not found"));
+
+        boolean alreadyExists = playlist.getTracks()
+                .stream()
+                .anyMatch(t -> t.getId().equals(track.getId()));
+
+        if (alreadyExists) {
+            throw new ServiceException(HttpStatus.BAD_REQUEST,
+                    "Track already exists in playlist");
+        }
 
         playlist.getTracks().add(track);
         return playlistRepository.save(playlist);
     }
 
     @Override
-    public Playlist uploadTrack(Long playlistId, TrackUploadRequest  file ) {
+    public Playlist uploadTrack(Long playlistId, TrackUploadRequest file) {
         Playlist playlist = playlistRepository.findById(playlistId)
-                .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Playlist not found"));
+                .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND,
+                        "Playlist not found"));
 
         Track uploadedTrack = trackService.upload(file);
+
+        boolean alreadyExists = playlist.getTracks()
+                .stream()
+                .anyMatch(t -> t.getId().equals(uploadedTrack.getId()));
+
+        if (alreadyExists) {
+            throw new ServiceException(HttpStatus.BAD_REQUEST,
+                    "Track already exists in playlist");
+        }
+
         playlist.getTracks().add(uploadedTrack);
         return playlistRepository.save(playlist);
     }
+
     @Override
     public void deletePlaylist(Long playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
-                .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Playlist not found"));
+                .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND,
+                        "Playlist not found"));
+
         playlistRepository.delete(playlist);
     }
 
     @Override
     public Playlist removeTrack(Long playlistId, Long trackId) {
         Playlist playlist = playlistRepository.findById(playlistId)
-                .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Playlist not found"));
+                .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND,
+                        "Playlist not found"));
 
         Track track = trackService.getById(trackId)
-                .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Track not found"));
+                .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND,
+                        "Track not found"));
 
-        boolean removed = playlist.getTracks().removeIf(t -> t.getId().equals(track.getId()));
+        boolean contains = playlist.getTracks()
+                .stream()
+                .anyMatch(t -> t.getId().equals(track.getId()));
 
-        if (!removed) {
-            throw Problem.valueOf(Status.NOT_FOUND, "Track not found in playlist");
+        if (!contains) {
+            throw new ServiceException(HttpStatus.NOT_FOUND,
+                    "Track not in playlist");
         }
 
+        playlist.getTracks().removeIf(t -> t.getId().equals(track.getId()));
         return playlistRepository.save(playlist);
     }
+
     @Override
     public Playlist getByIdOrThrow(Long id) {
         return playlistRepository.findById(id)
-                .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "Playlist not found"));
+                .orElseThrow(() -> new ServiceException(HttpStatus.NOT_FOUND,
+                        "Playlist not found"));
     }
 
-
-
     @Override
-    public Optional<Playlist> findByName(String name){
+    public Optional<Playlist> findByName(String name) {
         return playlistRepository.findByName(name);
     }
 
-    public List<TrackResponse> findAll(){
-
-        return null;
+    @Override
+    public List<Playlist> getAllPlaylists() {
+        return playlistRepository.findAll();
     }
-
 }
-

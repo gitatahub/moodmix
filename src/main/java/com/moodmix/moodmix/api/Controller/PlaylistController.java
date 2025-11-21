@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/playlist")
@@ -25,6 +27,17 @@ public class PlaylistController {
         Playlist created = playlistService.createPlaylist(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(PlaylistResponse.fromEntity(created));
     }
+
+    @GetMapping
+    public ResponseEntity<List<PlaylistResponse>> getAllPlaylists() {
+        List<Playlist> playlists = playlistService.getAllPlaylists();
+        List<PlaylistResponse> responses = playlists.stream()
+                .map(PlaylistResponse::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(responses);
+    }
+
 
     @GetMapping("/{playlistId}")
     public ResponseEntity<PlaylistResponse> getPlaylist(@PathVariable Long playlistId) {

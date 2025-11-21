@@ -14,4 +14,5 @@ public interface IPlaylistRepository {
     void delete(Playlist playlist);
 
 
+    List<Playlist> findAll();
 }

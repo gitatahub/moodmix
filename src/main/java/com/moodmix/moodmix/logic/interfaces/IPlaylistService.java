@@ -25,5 +25,6 @@ public interface IPlaylistService {
 
     public Playlist getByIdOrThrow(Long id);
 
-    List<TrackResponse> findAll();
+    List<Playlist> getAllPlaylists();
+
 }
