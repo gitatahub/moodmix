@@ -34,10 +34,7 @@ class PlaylistServiceUnitTest {
         playlistService = new PlaylistService(playlistRepository, trackService);
     }
 
-    // -----------------------------------------------------------------------------------
-    // createPlaylist()
-    // -----------------------------------------------------------------------------------
-
+    //create playlist
     @Test
     void createPlaylist_success() {
         CreatePlaylistRequest req = new CreatePlaylistRequest("Chill", "Relax vibes");
@@ -138,9 +135,8 @@ class PlaylistServiceUnitTest {
         assertEquals("Track already exists in playlist", ex.getMessage());
     }
 
-    // -----------------------------------------------------------------------------------
-    // uploadTrack()
-    // -----------------------------------------------------------------------------------
+
+    // uploadTrack
 
     @Test
     void uploadTrack_success() {
@@ -198,9 +194,9 @@ class PlaylistServiceUnitTest {
         assertEquals("Track already exists in playlist", ex.getMessage());
     }
 
-    // -----------------------------------------------------------------------------------
-    // removeTrack()
-    // -----------------------------------------------------------------------------------
+
+    // removeTrack
+
 
     @Test
     void removeTrack_success() {
@@ -269,9 +265,7 @@ class PlaylistServiceUnitTest {
         assertEquals("Track not in playlist", ex.getMessage());
     }
 
-    // -----------------------------------------------------------------------------------
     // getAllPlaylists()
-    // -----------------------------------------------------------------------------------
 
     @Test
     void getAllPlaylists_success() {
